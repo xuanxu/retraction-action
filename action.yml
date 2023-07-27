@@ -1,0 +1,61 @@
+name: Open Journal Retraction Notice
+description: Retract a paper publishing a retraction notice
+inputs:
+  issue_id:
+    description: The review issue id for the paper to be retracted
+    required: true
+  retraction_notice_url:
+    description: URL for the markdown file of the retraction notice
+    required: true
+  journal:
+    description: The journal to use for the preprint. Default is 'joss'.
+    required: false
+    default: joss
+  mode:
+    description: Set the compiled retraction notice as a draft or as a final published paper. Posible values are 'draft' or 'final'.
+    required: false
+    default: draft
+runs:
+  using: "composite"
+  steps:
+    - name: Install Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.2.2
+        bundler-cache: true
+        cache-version: retraction
+        bundler: Gemfile.lock
+        working-directory: ${{ github.action_path }}
+    - name: Prepare retraction metadata
+      id: retraction-metadata
+      shell: bash
+      env:
+        ISSUE_ID: ${{ inputs.issue_id }}
+        JOURNAL_ALIAS: ${{ inputs.journal }}
+        BUNDLE_GEMFILE: ${{ github.action_path }}/Gemfile
+      run: |
+        bundle exec ruby ${{ github.action_path }}/prepare_retraction_metadata.rb
+    - name: Build retraction notice
+      id: build-retraction
+      uses: xuanxu/publishing-artifacts-action@main
+      with:
+        paper-path: ${{ inputs.retraction_notice_url }}
+        args: ${{steps.retraction-metadata.outputs.inara_args}}
+    - name: Process retraction notice
+      id: process-retraction
+      shell: bash
+      env:
+        ISSUE_ID: ${{ inputs.issue_id }}
+        JOURNAL_ALIAS: ${{ inputs.journal }}
+        PAPER_PATH: ${{steps.build-retraction.outputs.paper_file_path}}
+      run: |
+        ruby ${{ github.action_path }}/process_retraction_notice.rb
+    - uses: actions/upload-artifact@v3
+      if: ${{ success() && inputs.mode != 'final' }}
+      with:
+        name: preprint-${{ inputs.journal }}-${{ inputs.issue_id }}
+        path: ${{ steps.process-retraction.outputs.retraction_notice_path }}
+        retention-days: 2
+branding:
+  icon: file-minus
+  color: red
