@@ -17,10 +17,6 @@ inputs:
     default: draft
 runs:
   using: "composite"
-  env:
-    ISSUE_ID: ${{ inputs.issue_id }}
-    JOURNAL_ALIAS: ${{ inputs.journal }}
-    RETRACTION_NOTICE_URL: ${{ inputs.retraction_notice_url }}
   steps:
     - name: Install Ruby
       uses: ruby/setup-ruby@v1
@@ -34,6 +30,9 @@ runs:
       id: retraction-metadata
       shell: bash
       env:
+        ISSUE_ID: ${{ inputs.issue_id }}
+        JOURNAL_ALIAS: ${{ inputs.journal }}
+        RETRACTION_NOTICE_URL: ${{ inputs.retraction_notice_url }}
         BUNDLE_GEMFILE: ${{ github.action_path }}/Gemfile
       run: |
         bundle exec ruby ${{ github.action_path }}/prepare_retraction_metadata.rb
