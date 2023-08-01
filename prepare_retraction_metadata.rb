@@ -43,14 +43,14 @@ end
 
 retraction_metadata.transform_keys!(&:to_s)
 
-metadata_file_path = File.dirname(__FILE__) + "/retraction-notice-metadata.yaml"
+metadata_file_path = File.expand_path("./retraction-notice-metadata.yaml")
 
 File.open(metadata_file_path, "w") do |f|
   f.write retraction_metadata.to_yaml
 end
 
 if File.exist?(metadata_file_path)
-  system("echo 'Metadata created for retraction paper!'")
+  system("echo 'Metadata created for retraction paper!: #{metadata_file_path}'")
 else
   raise "   !! ERROR: Retraction metadata file could not be generated"
 end
