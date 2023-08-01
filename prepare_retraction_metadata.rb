@@ -20,7 +20,7 @@ begin
     tags: paper_metadata[:tags],
     authors: [{ given_name: journal_alias.upcase,
                 last_name: "Editorial Board",
-                affiliation: journal_data.name}],
+                affiliation: journal.name}],
     doi: paper_metadata[:doi] + "R",
     software_repository_url: paper_metadata[:software_repository_url],
     reviewers: [],
@@ -35,7 +35,7 @@ begin
     submitted_at: Time.now.strftime("%Y-%m-%d"),
     published_at: Time.now.strftime("%Y-%m-%d")
   }
-  retraction_metadata[:citation_string] = "#{journal_alias.upcase} Editorial Board, (#{retraction_metadata[:year]}). #{retraction_metadata[:title]}. #{journal_data.name}, #{retraction_metadata[:volume]}(#{retraction_metadata[:issue]}), #{retraction_metadata[:review_issue_id]}, https://doi.org/#{retraction_metadata[:doi]}"
+  retraction_metadata[:citation_string] = "#{journal_alias.upcase} Editorial Board, (#{retraction_metadata[:year]}). #{retraction_metadata[:title]}. #{journal.name}, #{retraction_metadata[:volume]}(#{retraction_metadata[:issue]}), #{retraction_metadata[:review_issue_id]}, https://doi.org/#{retraction_metadata[:doi]}"
 
 rescue Theoj::Error => e
   raise "  ‼️ Error: #{e.message}"
