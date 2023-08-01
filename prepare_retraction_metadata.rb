@@ -43,7 +43,7 @@ end
 
 retraction_metadata.transform_keys!(&:to_s)
 
-metadata_file_path = File.expand_path("./retraction-notice-metadata.yaml")
+metadata_file_path = "./retraction-notice-metadata.yaml"
 
 File.open(metadata_file_path, "w") do |f|
   f.write retraction_metadata.to_yaml
@@ -61,7 +61,7 @@ system("echo 'inara_args=#{inara_args}' >> $GITHUB_OUTPUT")
 
 # Download retraction notice file
 retraction_notice_url = ENV["RETRACTION_NOTICE_URL"]
-retraction_notice_file_path = File.dirname(__FILE__) + "/retraction-notice-paper.md"
+retraction_notice_file_path = "./retraction-notice-paper.md"
 
 retraction_contents = URI.parse(retraction_notice_url).read
 
