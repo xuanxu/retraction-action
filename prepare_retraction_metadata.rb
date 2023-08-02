@@ -31,7 +31,7 @@ begin
     journal_alias: journal_alias,
     software_review_url: paper_metadata[:paper_review],
     archive_doi: paper_metadata[:software_archive],
-    editor: { github_user: "openjournals",  name: "Editorial Board", url: journal.data[:url] },
+    editor: { github_user: "openjournals", name: "Editorial Board", url: journal.data[:url] },
     submitted_at: Time.now.strftime("%Y-%m-%d"),
     published_at: Time.now.strftime("%Y-%m-%d")
   }
@@ -41,6 +41,8 @@ rescue Theoj::Error => e
   raise "  ‼️ Error: #{e.message}"
 end
 
+retraction_metadata[:editor].transform_keys!(&:to_s)
+metadata[:authors].each {|author| author.transform_keys!(&:to_s) }
 retraction_metadata.transform_keys!(&:to_s)
 
 metadata_file_path = "./retraction-notice-metadata.yaml"
