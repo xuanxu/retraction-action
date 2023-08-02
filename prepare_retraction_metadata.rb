@@ -29,9 +29,9 @@ begin
     year: journal.current_year,
     page: paper_metadata[:page] + "R",
     journal_alias: journal_alias,
-    editor: {},
     software_review_url: nil,
     archive_doi: nil,
+    editor: { name: "Editorial Board", url: journal.data[:url] },
     submitted_at: Time.now.strftime("%Y-%m-%d"),
     published_at: Time.now.strftime("%Y-%m-%d")
   }
