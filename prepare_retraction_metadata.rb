@@ -35,7 +35,7 @@ begin
     submitted_at: Time.now.strftime("%Y-%m-%d"),
     published_at: Time.now.strftime("%Y-%m-%d")
   }
-  retraction_metadata[:citation_string] = "#{journal_alias.upcase} Editorial Board, (#{retraction_metadata[:year]}). #{retraction_metadata[:title]}. #{journal.name}, #{retraction_metadata[:volume]}(#{retraction_metadata[:issue]}), #{retraction_metadata[:review_issue_id]}, https://doi.org/#{retraction_metadata[:doi]}"
+  retraction_metadata[:citation_string] = "#{journal_alias.upcase} Editorial Board, (#{retraction_metadata[:year]}). #{retraction_metadata[:title]}. #{journal.name}, #{retraction_metadata[:volume]}(#{retraction_metadata[:issue]}), #{issue_id + "R"}, https://doi.org/#{retraction_metadata[:doi]}"
 
 rescue Theoj::Error => e
   raise "  ‼️ Error: #{e.message}"
