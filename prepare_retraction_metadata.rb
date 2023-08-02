@@ -42,7 +42,7 @@ rescue Theoj::Error => e
 end
 
 retraction_metadata[:editor].transform_keys!(&:to_s)
-metadata[:authors].each {|author| author.transform_keys!(&:to_s) }
+retraction_metadata[:authors].each {|author| author.transform_keys!(&:to_s) }
 retraction_metadata.transform_keys!(&:to_s)
 
 metadata_file_path = "./retraction-notice-metadata.yaml"
