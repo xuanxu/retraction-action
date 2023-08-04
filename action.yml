@@ -35,10 +35,7 @@ runs:
         RETRACTION_NOTICE_URL: ${{ inputs.retraction_notice_url }}
         BUNDLE_GEMFILE: ${{ github.action_path }}/Gemfile
       run: |
-        echo "::group::Preparing metadata"
         bundle exec ruby ${{ github.action_path }}/prepare_retraction_metadata.rb
-        echo "::endgroup::"
-        echo "::group::Compiling retraction notice"
     - name: Build retraction notice
       id: build-retraction
       uses: xuanxu/publishing-artifacts-action@main
@@ -51,10 +48,7 @@ runs:
       env:
         BUNDLE_GEMFILE: ${{ github.action_path }}/Gemfile
       run: |
-        echo "::endgroup::"
-        echo "::group::Processing retraction paper"
         bundle exec ruby ${{ github.action_path }}/process_retraction_notice.rb
-        echo "::endgroup::"
     - uses: actions/upload-artifact@v3
       if: ${{ success() && inputs.mode != 'final' }}
       with:
