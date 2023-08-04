@@ -35,7 +35,9 @@ runs:
         RETRACTION_NOTICE_URL: ${{ inputs.retraction_notice_url }}
         BUNDLE_GEMFILE: ${{ github.action_path }}/Gemfile
       run: |
+        echo "::group::Preparing metadata"
         bundle exec ruby ${{ github.action_path }}/prepare_retraction_metadata.rb
+        echo "::endgroup::"
     - name: Build retraction notice
       id: build-retraction
       uses: xuanxu/publishing-artifacts-action@main
