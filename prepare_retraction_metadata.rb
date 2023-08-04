@@ -8,7 +8,7 @@ journal_alias = ENV["JOURNAL_ALIAS"]
 
 begin
   journal_data = Theoj::JOURNALS_DATA[journal_alias.to_sym]
-  raise "  ‼️ Error: Can't find journal #{journal_alias}" if journal_data.nil?
+  raise "  ❌ Error: Can't find journal #{journal_alias}" if journal_data.nil?
 
   journal = Theoj::Journal.new(journal_data)
   doi = journal.paper_doi_for_id(journal.paper_id_from_issue(issue_id))
@@ -38,7 +38,7 @@ begin
   retraction_metadata[:citation_string] = "#{journal_alias.upcase} Editorial Board, (#{retraction_metadata[:year]}). #{retraction_metadata[:title]}. #{journal.name}, #{retraction_metadata[:volume]}(#{retraction_metadata[:issue]}), #{issue_id + "R"}, https://doi.org/#{retraction_metadata[:doi]}"
 
 rescue Theoj::Error => e
-  raise "  ‼️ Error: #{e.message}"
+  raise " ❌ Error: #{e.message}"
 end
 
 retraction_metadata[:editor].transform_keys!(&:to_s)
@@ -52,9 +52,9 @@ File.open(metadata_file_path, "w") do |f|
 end
 
 if File.exist?(metadata_file_path)
-  system("echo 'Metadata created for retraction paper!: #{metadata_file_path}'")
+  system("echo '✅ Metadata created for retraction paper!: #{metadata_file_path}'")
 else
-  raise "   !! ERROR: Retraction metadata file could not be generated"
+  raise " ❌ ERROR: Retraction metadata file could not be generated"
 end
 
 inara_args = "-m #{metadata_file_path} -l -p -o pdf,crossref,jats"
@@ -72,5 +72,5 @@ File.open(retraction_notice_file_path, "w") do |f|
 end
 
 system("echo 'retraction_notice_path=#{retraction_notice_file_path}' >> $GITHUB_OUTPUT")
-system("echo 'Retraction notice downloaded!'")
+system("echo '✅ Retraction notice downloaded!'")
 
