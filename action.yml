@@ -53,7 +53,10 @@ runs:
       if: ${{ success() && inputs.mode != 'final' }}
       with:
         name: retraction-test-${{ inputs.journal }}-${{ inputs.issue_id }}
-        path: paper.pdf
+        path: |
+          paper.pdf
+          paper.crossref
+          paper.jats
         retention-days: 1
 branding:
   icon: file-minus
