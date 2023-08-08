@@ -8,7 +8,7 @@ journal_alias = ENV["JOURNAL_ALIAS"]
 
 begin
   journal_data = Theoj::JOURNALS_DATA[journal_alias.to_sym]
-  raise "  ❌ Error: Can't find journal #{journal_alias}" if journal_data.nil?
+  raise " ❌ Error: Can't find journal #{journal_alias}" if journal_data.nil?
 
   journal = Theoj::Journal.new(journal_data)
   doi = journal.paper_doi_for_id(journal.paper_id_from_issue(issue_id))

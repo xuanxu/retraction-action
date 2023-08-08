@@ -42,13 +42,6 @@ runs:
       with:
         paper-path: ${{ steps.retraction-metadata.outputs.retraction_notice_path }}
         args: ${{steps.retraction-metadata.outputs.inara_args}}
-    - name: Process retraction notice
-      id: process-retraction
-      shell: bash
-      env:
-        BUNDLE_GEMFILE: ${{ github.action_path }}/Gemfile
-      run: |
-        bundle exec ruby ${{ github.action_path }}/process_retraction_notice.rb
     - uses: actions/upload-artifact@v3
       if: ${{ success() && inputs.mode != 'final' }}
       with:
@@ -58,6 +51,12 @@ runs:
           paper.crossref
           paper.jats
         retention-days: 1
+    - name: Process retraction notice
+      shell: bash
+      env:
+        BUNDLE_GEMFILE: ${{ github.action_path }}/Gemfile
+      run: |
+        bundle exec ruby ${{ github.action_path }}/validate_retraction_metadata.rb
 branding:
   icon: file-minus
   color: red
