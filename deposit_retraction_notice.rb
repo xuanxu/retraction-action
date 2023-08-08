@@ -112,4 +112,4 @@ system("echo '✨ Pull request with all the files: #{gh_pr_response.html_url}'")
 
 # Deposit with Open Journals:
 
-system("echo '🎉 Retraction notice deposited with #{journal_alias.upcase}'")'
+system("echo '🎉 Retraction notice deposited with #{journal_alias.upcase}'")
