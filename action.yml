@@ -11,6 +11,31 @@ inputs:
     description: The journal to use for the preprint. Default is 'joss'.
     required: false
     default: joss
+  papers_repo:
+    description: The repository for the published papers. Default is 'openjournals/joss-papers'
+    required: false
+    default: openjournals/joss-papers
+  papers_repo_main_branch:
+    description: The name of the repo's main branch to issue the pull request against
+    required: false
+    default: "main"
+  branch_prefix:
+    description: The prefix to add to the name of all branches
+    required: false
+    default: ""
+  github_bot_token:
+    description: The GitHub access token to be used to upload files
+    required: false
+  crossref_username:
+    description: Crossref username doing the deposit
+    required: true
+  crossref_password:
+    description: Crossref password
+    required: true
+  crossref_mode:
+    description: Use test or production crossref calls
+    required: false
+    default: ""
   mode:
     description: Set the compiled retraction notice as a draft or as a final published paper. Posible values are 'draft' or 'final'.
     required: false
@@ -57,6 +82,27 @@ runs:
         BUNDLE_GEMFILE: ${{ github.action_path }}/Gemfile
       run: |
         bundle exec ruby ${{ github.action_path }}/validate_retraction_metadata.rb
+    - name: Deposit retraction notice with Open Journals
+      if: ${{ success() && inputs.mode == 'final' }}
+      shell: bash
+      env:
+        BUNDLE_GEMFILE: ${{ github.action_path }}/Gemfile
+        BOT_TOKEN: ${{ inputs.github_bot_token }}
+        ISSUE_ID: ${{ inputs.issue_id }}
+        JOURNAL_ALIAS: ${{ inputs.journal }}
+        PAPERS_REPO: ${{ inputs.papers_repo }}
+        PAPERS_REPO_MAIN_BRANCH: ${{ inputs.papers_repo_main_branch }}
+        BRANCH_PREFIX: ${{ inputs.branch_prefix }}
+      run: |
+        bundle exec ruby ${{ github.action_path }}/deposit_retraction_notice.rb
+    - name: Deposit retraction notice with Crossref
+      uses: xuanxu/deposit-with-crossref-action@main
+      if: ${{ success() && inputs.mode == 'final' }}
+      with:
+        crossref_filepath: paper.crossref
+        crossref_username: ${{ inputs.crossref_username }}
+        crossref_password: ${{ inputs.crossref_password }}
+        crossref_mode: ${{ inputs.crossref_mode }}
 branding:
   icon: file-minus
   color: red
