@@ -38,4 +38,4 @@ else
   system("echo '👀❗️ [JATS metadata] File was not be generated!'")
 end
 
-system("echo '🎉 Retraction paper processed!'")
+system("echo '🎉 Retraction metadata processed!'")
