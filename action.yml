@@ -76,7 +76,7 @@ runs:
           paper.crossref
           paper.jats
         retention-days: 1
-    - name: Process retraction notice
+    - name: Validate retraction metadata
       shell: bash
       env:
         BUNDLE_GEMFILE: ${{ github.action_path }}/Gemfile
