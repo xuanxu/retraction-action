@@ -57,7 +57,7 @@ else
   raise " ❌ ERROR: Retraction metadata file could not be generated"
 end
 
-inara_args = "-m #{metadata_file_path} -l -p -r -o pdf,crossref,jats"
+inara_args = "-m #{metadata_file_path} -p -r -o pdf,crossref,jats"
 system("echo 'inara_args=#{inara_args}' >> $GITHUB_OUTPUT")
 
 
