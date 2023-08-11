@@ -26,6 +26,9 @@ inputs:
   github_bot_token:
     description: The GitHub access token to be used to upload files
     required: false
+  journal_secret:
+    description: The access token to be used to deposit the paper
+    required: true
   crossref_username:
     description: Crossref username doing the deposit
     required: true
@@ -90,6 +93,7 @@ runs:
         BOT_TOKEN: ${{ inputs.github_bot_token }}
         ISSUE_ID: ${{ inputs.issue_id }}
         JOURNAL_ALIAS: ${{ inputs.journal }}
+        JOURNAL_SECRET: ${{ inputs.journal_secret }}
         PAPERS_REPO: ${{ inputs.papers_repo }}
         PAPERS_REPO_MAIN_BRANCH: ${{ inputs.papers_repo_main_branch }}
         BRANCH_PREFIX: ${{ inputs.branch_prefix }}
