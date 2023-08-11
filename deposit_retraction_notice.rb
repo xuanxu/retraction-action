@@ -18,6 +18,7 @@ def get_main_ref(repo, main_branch)
 end
 
 journal_alias = ENV["JOURNAL_ALIAS"].to_s
+journal_secret = ENV['JOURNAL_SECRET']
 issue_id = ENV["ISSUE_ID"].to_s
 papers_repo = ENV["PAPERS_REPO"].to_s
 papers_repo_main_banch = ENV["PAPERS_REPO_MAIN_BRANCH"] || "main"
@@ -112,4 +113,20 @@ system("echo '✨ Pull request with all the files: #{gh_pr_response.html_url}'")
 
 # Deposit with Open Journals:
 
-system("echo '🎉 Retraction notice deposited with #{journal_alias.upcase}'")
+begin
+  journal = Theoj::Journal.new(Theoj::JOURNALS_DATA[journal_alias.to_sym])
+  doi = journal.paper_doi_for_id(journal.paper_id_from_issue(issue_id))
+  retraction_notice = Theoj::RetractionNotice.new(doi, journal_alias)
+
+  deposit_call = retraction_notice.deposit!(journal_secret)
+
+  if deposit_call.status.between?(200, 299)
+    system("echo '🎉 Retraction deposited with #{journal_alias.upcase}'")
+  else
+    raise " ❌ Error: Something went wrong with this deposit when calling #{journal.data[:retract_url]}"
+  end
+
+
+rescue Theoj::Error => e
+  raise " ❌ Error: #{e.message}"
+end
