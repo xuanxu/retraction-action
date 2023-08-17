@@ -9,9 +9,6 @@ This action is meant to be run manually
 
 The action requires the following inputs:
 
-- **crossref_filepath**: Required. The complete filepath of the Crossref XML file
-- **crossref_username**: Required. Crossref username doing the deposit
-- **crossref_password**: Required. Crossref password
 - **issue_id**: Required. The review issue id for the paper to be retracted
 - **retraction_notice_url**: Required. URL for the markdown file of the retraction notice
 - **journal**: Optional. The journal where the retracted paper is published. Default is 'joss'.
