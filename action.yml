@@ -8,7 +8,7 @@ inputs:
     description: URL for the markdown file of the retraction notice
     required: true
   journal:
-    description: The journal to use for the preprint. Default is 'joss'.
+    description: The journal where the retracted paper is published. Default is 'joss'.
     required: false
     default: joss
   papers_repo:
