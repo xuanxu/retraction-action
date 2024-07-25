@@ -70,7 +70,7 @@ runs:
         paper-path: ${{ steps.retraction-metadata.outputs.retraction_notice_path }}
         args: ${{steps.retraction-metadata.outputs.inara_args}}
     - name: Create artifact with generated files
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: ${{ success() && inputs.mode != 'final' }}
       with:
         name: retraction-test-${{ inputs.journal }}-${{ inputs.issue_id }}
